@@ -1152,6 +1152,17 @@ extension JSON {
         }
     }
     
+    public func requiredNumber() throws -> NSNumber {
+        switch self.type {
+        case .Number, .Bool:
+            return self.numberValue
+        case .Null:
+            throw RequirementError.MissingValue
+        default:
+            throw RequirementError.WrongValueType
+        }
+    }
+    
     public func requiredInt() throws -> Int {
         switch self.type {
         case .Number:
