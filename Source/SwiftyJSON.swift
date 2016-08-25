@@ -1133,7 +1133,7 @@ extension JSON {
     }
 }
 
-public enum RequirementError : ErrorType {
+public enum RequirementError : Error {
     case MissingValue
     case WrongValueType
 }
@@ -1143,9 +1143,9 @@ extension JSON {
     
     public func requiredString() throws -> String {
         switch self.type {
-        case .String:
+        case .string:
             return self.stringValue
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
@@ -1154,9 +1154,9 @@ extension JSON {
     
     public func requiredNumber() throws -> NSNumber {
         switch self.type {
-        case .Number, .Bool:
+        case .number, .bool:
             return self.numberValue
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
@@ -1165,9 +1165,9 @@ extension JSON {
     
     public func requiredInt() throws -> Int {
         switch self.type {
-        case .Number:
+        case .number:
             return self.intValue
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
@@ -1176,9 +1176,9 @@ extension JSON {
     
     public func requiredFloat() throws -> Float {
         switch self.type {
-        case .Number:
+        case .number:
             return self.floatValue
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
@@ -1187,9 +1187,9 @@ extension JSON {
     
     public func requiredBool() throws -> Bool {
         switch self.type {
-        case .Bool:
+        case .bool:
             return self.boolValue
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
@@ -1198,20 +1198,20 @@ extension JSON {
     
     public func requiredArray() throws -> [JSON] {
         switch self.type {
-        case .Array:
+        case .array:
             return self.arrayValue
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
         }
     }
     
-    public func requiredArrayObject() throws -> [AnyObject] {
+    public func requiredArrayObject() throws -> [Any] {
         switch self.type {
-        case .Array:
+        case .array:
             return self.arrayObject!
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
@@ -1220,35 +1220,35 @@ extension JSON {
     
     public func requiredDictionary() throws -> [String : JSON] {
         switch self.type {
-        case .Dictionary:
+        case .dictionary:
             return self.dictionaryValue
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
         }
     }
     
-    public func requiredDictionaryObject() throws -> [String: AnyObject] {
+    public func requiredDictionaryObject() throws -> [String: Any] {
         switch self.type {
-        case .Dictionary:
+        case .dictionary:
             return self.dictionaryObject!
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
         }
     }
     
-    public func requiredURL() throws -> NSURL {
+    public func requiredURL() throws -> URL {
         switch self.type {
-        case .String:
+        case .string:
             if let url = self.URL {
                 return url
             } else {
                 throw RequirementError.WrongValueType
             }
-        case .Null:
+        case .null:
             throw RequirementError.MissingValue
         default:
             throw RequirementError.WrongValueType
