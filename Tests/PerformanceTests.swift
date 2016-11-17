@@ -27,6 +27,9 @@ class PerformanceTests: XCTestCase {
 
     var testData: Data!
     
+    var arrayIterationTestJSON: JSON!
+    var dicIterationTestJSON: JSON!
+    
     override func setUp() {
         super.setUp()
         
@@ -35,6 +38,16 @@ class PerformanceTests: XCTestCase {
         } else {
             XCTFail("Can't find the test JSON file")
         }
+        
+        var dic = [String: Int]()
+        for i in 0 ..< 500 {
+            let str = String(i)
+            dic[str] = i
+        }
+        
+        dicIterationTestJSON = JSON(dic)
+        
+        arrayIterationTestJSON = JSON(Array(0 ..< 500))
     }
     
     override func tearDown() {
@@ -116,6 +129,22 @@ class PerformanceTests: XCTestCase {
                 } else {
                     XCTFail("dictionary should not be nil")
                 }
+            }
+        }
+    }
+    
+    func testArrayIterationPerformance() {
+        let json: JSON = arrayIterationTestJSON
+        self.measure {
+            for _ in json {
+            }
+        }
+    }
+    
+    func testDicIterationPerformance() {
+        let json: JSON = dicIterationTestJSON
+        self.measure {
+            for _ in json {
             }
         }
     }

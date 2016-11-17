@@ -201,7 +201,7 @@ public struct JSON {
 public enum JSONIndex:Comparable
 {
     case array(Int)
-    case dictionary(DictionaryIndex<String, JSON>)
+    case dictionary(DictionaryIndex<String, Any>)
     case null
 }
 
@@ -245,7 +245,7 @@ extension JSON: Collection
         case .array:
             return .array(rawArray.startIndex)
         case .dictionary:
-            return .dictionary(dictionaryValue.startIndex)
+            return .dictionary(rawDictionary.startIndex)
         default:
             return .null
         }
@@ -258,7 +258,7 @@ extension JSON: Collection
         case .array:
             return .array(rawArray.endIndex)
         case .dictionary:
-            return .dictionary(dictionaryValue.endIndex)
+            return .dictionary(rawDictionary.endIndex)
         default:
             return .null
         }
@@ -271,7 +271,7 @@ extension JSON: Collection
         case .array(let idx):
             return .array(rawArray.index(after: idx))
         case .dictionary(let idx):
-            return .dictionary(dictionaryValue.index(after: idx))
+            return .dictionary(rawDictionary.index(after: idx))
         default:
             return .null
         }
@@ -285,7 +285,8 @@ extension JSON: Collection
         case .array(let idx):
             return (String(idx), JSON(self.rawArray[idx]))
         case .dictionary(let idx):
-            return dictionaryValue[idx]
+            let (key, value) = rawDictionary[idx]
+            return (key, JSON(value))
         default:
             return ("", JSON.null)
         }
